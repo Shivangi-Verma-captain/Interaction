@@ -4,6 +4,40 @@ body { margin: 0; }
 main { position: fixed; inset: 0; overflow: hidden; }
 canvas { display: block; width: 100%; height: 100%; object-fit: contain; touch-action: none; }
 canvas:focus-visible { outline: 1px solid #cfc2ec; outline-offset: -5px; }
+.portrait-title, .portrait-note {
+  position: absolute;
+  pointer-events: none;
+  margin: 0;
+  font-family: Baskervville, "Baskerville Old Face", Baskerville, Georgia, serif;
+}
+.portrait-title { left: 4vw; top: 43%; transform: translateY(-50%); }
+.portrait-title p {
+  margin: 0 0 1.15rem .12em;
+  color: #c9b8cd;
+  font: 500 .78rem/1.4 "Segoe UI", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+}
+.portrait-title h1 {
+  margin: 0;
+  color: #f6efe9;
+  font-size: clamp(2.6rem, 5.8vw, 7rem);
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: -.045em;
+}
+.portrait-title em { display: block; margin-left: .37em; font-weight: 400; color: #e4cddf; }
+.portrait-note {
+  right: 4vw; top: 61%; width: min(17vw, 15rem);
+  color: #e2d6ce;
+  font-size: clamp(1rem, 1.46vw, 1.45rem);
+  line-height: 1.38;
+  text-wrap: pretty;
+}
+.portrait-note::before {
+  display: block; content: ""; width: 2rem; height: 1px;
+  background: #bc9b93; margin-bottom: .9rem;
+}
 .controls {
   position: absolute; top: max(24px, env(safe-area-inset-top)); right: max(28px, env(safe-area-inset-right));
   display: flex; flex-direction: row-reverse; gap: 14px; align-items: center;
@@ -35,4 +69,27 @@ button[aria-pressed=true] .record-icon { border-radius: 2px; }
   .mouse-copy { display: none; }
 }
 @media (max-width: 600px) { .controls, #feedback, #download { right: 16px; } }
+@media (max-aspect-ratio: 6/5) {
+  .portrait-title { left: max(20px, env(safe-area-inset-left)); top: max(23px, env(safe-area-inset-top)); transform: none; }
+  .portrait-title p { margin-bottom: .5rem; font-size: .75rem; letter-spacing: .12em; }
+  .portrait-title h1 { font-size: clamp(2rem, 6.9vw, 3.9rem); line-height: 1; }
+  .portrait-title em { display: inline; margin: 0; }
+  .portrait-note {
+    top: auto; right: 0; bottom: 0; left: 0; width: auto;
+    padding: 1.8rem 8vw max(3.8rem, calc(env(safe-area-inset-bottom) + 3rem));
+    background: linear-gradient(transparent, #100e19d9 38%, #100e19);
+    text-align: center; font-size: clamp(1rem, 3.3vw, 1.25rem);
+  }
+  .portrait-note::before { display: none; }
+  #hint { bottom: max(15px, env(safe-area-inset-bottom)); }
+}
+@media (max-width: 520px) and (max-aspect-ratio: 6/5) {
+  .portrait-title em { display: block; margin-left: .35em; }
+  .portrait-note { padding-inline: 20px; }
+}
+@media (max-height: 440px) and (min-aspect-ratio: 6/5) {
+  .portrait-title { top: 42%; }
+  .portrait-title p { margin-bottom: .5rem; }
+  .portrait-note { top: auto; bottom: 2rem; width: 22vw; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

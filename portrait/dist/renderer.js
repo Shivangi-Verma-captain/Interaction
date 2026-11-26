@@ -32,7 +32,12 @@ function makeRenderer(canvas, count, appearance) {
       vec2 violet = (p-vec2(-.13,.38)-focus)*vec2(2.8,2.2);
       vec2 gold = (p-vec2(.19,.85)+focus)*vec2(3.4,3.9);
       float noise = fract(sin(dot(mod(gl_FragCoord.xy,128.),vec2(.127,.317)))*437.1);
-      vec3 c = vec3(.023,.023,.033) + vec3(.075,.051,.109)*exp(-dot(violet,violet)*2.)
+      vec2 plum = (uv-vec2(.08,.78))*vec2(1.8,1.5);
+      vec2 amber = (uv-vec2(.96,.13))*vec2(1.9,1.7);
+      vec3 c = vec3(.038,.031,.051)
+             + vec3(.151,.081,.17)*exp(-dot(plum,plum)*1.65)
+             + vec3(.154,.096,.06)*exp(-dot(amber,amber)*1.8)
+             + vec3(.075,.051,.109)*exp(-dot(violet,violet)*2.)
              + vec3(.076,.068,.033)*exp(-dot(gold,gold)*1.8);
       gl_FragColor=vec4(c + (noise-.5)*.007,1.);
     }
@@ -116,13 +121,23 @@ function makeCanvasRenderer(canvas,count,appearance) {
     ctx.setTransform(dpr,0,0,dpr,0,0);
     if (size !== w+"x"+h) {
       size = w+"x"+h;
-      background=ctx.createRadialGradient(w*.52,h*.58,0,w*.52,h*.58,h*.78);
-      background.addColorStop(0,"#241d2d");
-      background.addColorStop(.55,"#17141c");
-      background.addColorStop(1,"#060609");
+      // Paint the soft light once per size, then reuse it for each particle frame.
+      background=document.createElement("canvas");
+      background.width=512;
+      background.height=Math.max(1,Math.round(512*h/w));
+      const field=background.getContext("2d");
+      field.scale(background.width,background.height);
+      field.fillStyle="#100d16";
+      field.fillRect(0,0,1,1);
+      for (const [x,y,r,color] of [[.08,.22,.81,"#35213d"],[.96,.87,.76,"#39291f"],[.48,.38,.32,"#211c2e"]]) {
+        const glow=field.createRadialGradient(x,y,0,x,y,r);
+        glow.addColorStop(0,color);
+        glow.addColorStop(1,color+"00");
+        field.fillStyle=glow;
+        field.fillRect(0,0,1,1);
+      }
     }
-    ctx.fillStyle=background;
-    ctx.fillRect(0,0,w,h);
+    ctx.drawImage(background,0,0,w,h);
     for (let i=0;i<count;i++) {
       const s=appearance[i*4+3]*scale*.8;
       ctx.fillStyle=colors[i];
