@@ -93,3 +93,21 @@ button[aria-pressed=true] .record-icon { border-radius: 2px; }
   .portrait-note { top: auto; bottom: 2rem; width: 22vw; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+main {position:relative;height:100svh;inset:auto}
+.studio-link {position:absolute;bottom:18px;right:4vw;font:500 .85rem "Segoe UI",sans-serif}
+.studio-link,#studio a {color:#eedeee;text-underline-offset:4px}
+#studio {padding:clamp(28px,5vw,80px);background:#19141d;color:#f6edf4;min-height:48vh}
+#studio header {display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+#studio h2 {font:400 clamp(2.4rem,4vw,4rem)/1 Georgia,serif;margin:0}
+#studio h2 em {color:#dbbfd4}
+.studio-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr));gap:2rem}
+#studio fieldset {min-width:0;margin:0;padding:1rem 0;border:0;border-top:1px solid #786774}
+#studio legend {padding-right:.8rem;font:1.25rem Georgia,serif}
+#studio label {display:flex;align-items:center;justify-content:space-between;gap:8px;margin:.65rem 0}
+#studio label:has(input[type=file]) {align-items:start;flex-direction:column}
+#studio input,#studio select {max-width:100%;accent-color:#deb8d5}
+#studio input[type=color] {width:44px;height:28px;padding:1px}
+#studio p,#studio small,#photo-status {display:block;color:#d4c5d1;line-height:1.55}
+#studio button {margin-top:.7rem}
+@media(max-width:900px){.studio-link{top:78px;right:16px;bottom:auto}main:has(#download:not([hidden])) .studio-link{top:165px}}

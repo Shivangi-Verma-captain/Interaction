@@ -28,6 +28,15 @@
     appearance[i*4+3]=(.96+3.28*Math.sqrt(tone)+.55*seed)*(.5+.5*fade);
   }
 
+  const originals=[homeX,homeY,depth,appearance].map(a=>a.slice());
+  studio.loadPhoto=img=>{
+    const arrays=[homeX,homeY,depth,appearance];
+    if(img) samplePhoto(img,homeX,homeY,depth,appearance);
+    else arrays.forEach((a,i)=>a.set(originals[i]));
+    for(const a of [vx,vy,dx,dy]) a.fill(0);
+    studio.revision++; wake();
+  };
+  document.addEventListener("studiochange",()=>wake());
   let draw = makeRenderer(canvas,count,appearance);
   let width,height,dpr,scale,ox,oy,settleUntil=0;
   function wake(){ settleUntil=performance.now()+3200; }
@@ -60,6 +69,7 @@
     }
   }
   function fromEvent(event){
+    if(studio.autoStart!==null)return;
     const rect=canvas.getBoundingClientRect();
     const fit=Math.min(rect.width/width,rect.height/height);
     point(((event.clientX-rect.left-(rect.width-width*fit)/2)/fit-ox)/scale,
@@ -87,6 +97,13 @@
     if (now>settleUntil && canvas.dataset.recording !== "true"){
       frameId=requestAnimationFrame(frame);
       return;
+    }
+    if(studio.autoStart!==null){
+      const t=clamp((now-studio.autoStart)/16000,0,1);
+      const x=width*(.5-.44*Math.cos(t*Math.PI*5));
+      const y=height*(.09+.82*t);
+      point((x-ox)/scale,(y-oy)/scale);
+      if(t>=1){studio.autoStart=null;release();canvas.dispatchEvent(new Event("autofinished"));}
     }
     const dt=clamp((now-previous)/1000,.001,.033);
     previous=now;
@@ -119,7 +136,7 @@
       coords[i*2]=ox+(x+dx[i])*scale;
       coords[i*2+1]=oy+(y+dy[i])*scale;
     }
-    draw(coords,width,height,scale,dpr,aimX,aimY);
+    draw(coords,width,height,scale,dpr,aimX,aimY,pointer.active?ox+pointer.x*scale:-10000,pointer.active?oy+pointer.y*scale:-10000);
     frameId=requestAnimationFrame(frame);
   }
   canvas.addEventListener("webglcontextlost",e=>{

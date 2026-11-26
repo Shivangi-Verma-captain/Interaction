@@ -8,6 +8,7 @@
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="style.css">
   <script defer src="assets/portrait.js"></script>
+  <script defer src="studio.js"></script>
   <script defer src="renderer.js"></script>
   <script defer src="portrait.js"></script>
   <script defer src="recording.js"></script>
@@ -27,7 +28,17 @@
     <div id="feedback" role="status" aria-live="polite"></div>
     <p id="hint"><span class="mouse-copy">Move your cursor across the portrait</span><span class="touch-copy">Drag across the portrait</span></p>
     <a id="download" hidden>Save video</a>
+    <a class="studio-link" href="#studio">Portrait studio ↓</a>
     <noscript>Enable JavaScript to view the interactive portrait.</noscript>
   </main>
+  <section id="studio" aria-labelledby="studio-heading">
+    <header><h2 id="studio-heading">Portrait <em>studio</em></h2><a href="#scene">View portrait ↑</a></header>
+    <div class="studio-grid">
+      <fieldset><legend>Photograph</legend><label>Choose a close-up photo<input id="photo" type="file" accept="image/*"></label><small>A centered face against a plain background works best. Your photo stays on this device.</small><button id="restore" hidden>Restore original</button><span id="photo-status" role="status"></span></fieldset>
+      <fieldset><legend>Background</legend><label>First color<input id="first" type="color" value="#35213d"></label><label>Second color<input id="second" type="color" value="#39291f"></label></fieldset>
+      <fieldset><legend>Particles</legend><label>Size<input id="size" type="range" min="75" max="140" value="100"></label><label>Shape<select id="shape"><option>Round</option><option>Oval</option><option>Triangle</option><option>Square</option></select></label><label>Hover tint<input id="tint" type="color" value="#efb4e4"></label></fieldset>
+      <fieldset><legend>Automatic recording</legend><p>A 16-second sweep across the portrait, ready to save as a video.</p><button id="auto">Record automatic pass</button></fieldset>
+    </div>
+  </section>
 </body>
 </html>

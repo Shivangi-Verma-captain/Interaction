@@ -3,6 +3,8 @@
   const button=document.querySelector("#record"), label=document.querySelector("#record-label");
   const elapsed=document.querySelector("#elapsed"), feedback=document.querySelector("#feedback");
   const download=document.querySelector("#download");
+  const auto=document.querySelector("#auto");
+  auto.disabled=true;
   let recorder,stream,timer,previousURL;
   if (!canvas.dataset.ready) {
     feedback.textContent="The portrait could not be rendered. Try reloading this page.";
@@ -12,9 +14,12 @@
     feedback.textContent="Open this page in a browser with canvas recording support to save a video.";
     return;
   }
+  auto.disabled=false;
   button.disabled=false;
   button.setAttribute("aria-pressed","false");
   function cleanup(){
+    studio.autoStart=null; auto.disabled=false;
+    canvas.dispatchEvent(new Event("pointerleave"));
     clearInterval(timer);
     stream?.getTracks().forEach(track=>track.stop());
     recorder=null;
@@ -61,6 +66,7 @@
         download.focus({preventScroll:true});
       };
       recorder.start(1000);
+      auto.disabled=true;
       canvas.dataset.recording="true";
       const start=performance.now();
       function tick(){
@@ -76,5 +82,11 @@
       feedback.textContent="The browser couldn’t start a recording. Try again or open the page in another browser.";
     }
   });
+  auto.addEventListener("click",()=>{
+    canvas.scrollIntoView({block:"start"});
+    button.click();
+    if(recorder?.state==="recording")studio.autoStart=performance.now();
+  });
+  canvas.addEventListener("autofinished",stop);
   canvas.addEventListener("renderpaused",stop);
 })();
