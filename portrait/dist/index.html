@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0910">
+  <title>Particle Portrait</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="assets/portrait.js"></script>
+  <script defer src="renderer.js"></script>
+  <script defer src="portrait.js"></script>
+  <script defer src="recording.js"></script>
+</head>
+<body>
+  <main aria-label="Interactive particle portrait">
+    <canvas id="scene" tabindex="0" aria-label="A portrait made of luminous dots. Move your pointer, drag a finger, or use the arrow keys to deform it."></canvas>
+    <div class="controls">
+      <button id="record" type="button" disabled><span class="record-icon" aria-hidden="true"></span><span id="record-label">Record</span></button>
+      <span id="elapsed" hidden aria-hidden="true">0:00</span>
+    </div>
+    <div id="feedback" role="status" aria-live="polite"></div>
+    <p id="hint"><span class="mouse-copy">Move your cursor across the portrait</span><span class="touch-copy">Drag across the portrait</span></p>
+    <a id="download" hidden>Save video</a>
+    <noscript>Enable JavaScript to view the interactive portrait.</noscript>
+  </main>
+</body>
+</html>

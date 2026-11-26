@@ -1,0 +1,38 @@
+:root { color-scheme: dark; font-family: Inter, "Segoe UI", sans-serif; background: #09090d; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { position: fixed; inset: 0; overflow: hidden; }
+canvas { display: block; width: 100%; height: 100%; object-fit: contain; touch-action: none; }
+canvas:focus-visible { outline: 1px solid #cfc2ec; outline-offset: -5px; }
+.controls {
+  position: absolute; top: max(24px, env(safe-area-inset-top)); right: max(28px, env(safe-area-inset-right));
+  display: flex; flex-direction: row-reverse; gap: 14px; align-items: center;
+}
+button, #download {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 1px solid #ffffff39; border-radius: 30px; padding: 0 18px; height: 42px;
+  background: #18171fde; color: #f4f1fa; font: 500 .9rem/1 "Segoe UI", sans-serif;
+  text-decoration: none; cursor: pointer; transition: border-color .2s, background .2s;
+}
+button:hover, #download:hover { border-color: #ffffff89; background: #302d39; }
+button:focus-visible, a:focus-visible { outline: 2px solid #dfd1fc; outline-offset: 4px; }
+button:disabled { opacity: .55; cursor: default; }
+.record-icon { width: 10px; height: 10px; border-radius: 50%; background: #fd878e; }
+button[aria-pressed=true] .record-icon { border-radius: 2px; }
+#elapsed { color: #e4dfe9; font-size: .9rem; font-variant-numeric: tabular-nums; }
+#hint, #feedback, #download { position: absolute; }
+#hint {
+  margin: 0; bottom: max(24px, env(safe-area-inset-bottom)); left: 0; right: 0;
+  text-align: center; font-size: .86rem; letter-spacing: .02em; color: #dbd6e2;
+  text-shadow: 0 1px 6px #000; pointer-events: none; transition: opacity 1s;
+}
+#hint.used { opacity: 0; }
+#feedback { right: 28px; top: max(78px, calc(env(safe-area-inset-top) + 54px)); max-width: min(320px, 80vw); color: #ece5ed; font-size: .9rem; text-align: right; }
+#download { right: 28px; top: max(110px, calc(env(safe-area-inset-top) + 86px)); }
+[hidden], .touch-copy { display: none !important; }
+@media (pointer: coarse) {
+  .touch-copy { display: inline !important; }
+  .mouse-copy { display: none; }
+}
+@media (max-width: 600px) { .controls, #feedback, #download { right: 16px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
